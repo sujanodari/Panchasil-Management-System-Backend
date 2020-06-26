@@ -36,3 +36,44 @@ describe("/POST user", () => {
       });
   });
 });
+
+
+//Login TDD 
+describe('/POST user', () => {
+  it('it should post the Login info', (done) => {
+      const user = {
+          email: " fadera@gmail.com",
+          password: "fadera123"
+         
+      };
+      chai.request(app)
+      .post('/api/v1/users/signin')
+      .send(user)
+      .end((err, res) => {
+        
+          res.body.should.be.a('object');
+          //res.body.should.have.property('message');
+          done();
+      });
+  });
+});
+
+
+//Forget password TDD
+describe('/PUT/:id user', () => {
+  it("should  update the unapproved user status", (done) => {
+      const user = {
+        verified: 1,
+       
+      }
+      const userId = 2;
+       chai.request(app)
+       .put('/api/v1/users/forget'+ userId)
+       .send(user)
+       .end((err, res) => {
+           res.should.have.status(404);
+           res.body.should.be.a('object');
+           done();
+       });
+  });
+});
