@@ -7,6 +7,7 @@ var app = express();
 var cors = require("cors");
 const loginController = require("./controllers/loginController");
 const forgotPassword = require("./controllers/forgotPassword");
+const userApproved=require("./controllers/userApproved")
 
 app.use(cors());
 // parse application/x-www-form-urlencoded
@@ -17,6 +18,10 @@ app.use(bodyParser.json());
 app.post("/api/v1/users/signup", registrationController.register);
 app.post("/api/v1/users/signin", loginController.login);
 app.put("/api/v1/users/forget", forgotPassword.forgetPassword);
+
+
+app.get("/api/v1/users/approve", userApproved.getApproved);
+app.put("/api/v1/users/approve/:id", userApproved.approveRegister);
 
 app.use(function (err, req, res, next) {
   res.status(500);
