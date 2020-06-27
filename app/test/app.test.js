@@ -77,3 +77,36 @@ describe('/PUT/:id user', () => {
        });
   });
 });
+
+
+//User registration approve TDD
+describe('/GET Unapproved', () => {
+  it('it should Get all unapproved list of users', (done) => {
+      chai.request(app)
+      .get('/api/v1/users/approve')
+      .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+      });
+  });
+});
+
+
+describe('/PUT/:id user', () => {
+  it("should  update the unapproved user status", (done) => {
+      const user = {
+        verified: 1,
+       
+      }
+      const userId = 2;
+       chai.request(app)
+       .put('/api/v1/users/approve'+ userId)
+       .send(user)
+       .end((err, res) => {
+           res.should.have.status(404);
+           res.body.should.be.a('object');
+           done();
+       });
+  });
+});
