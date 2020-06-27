@@ -3,8 +3,6 @@ process.env.NODE_ENV = "test";
 var chai = require("chai");
 var chaiHttp = require("chai-http");
 var app = require("../index");
-
-const userModel = require("../models/UserModel");
 const should = chai.should();
 chai.use(chaiHttp);
 
@@ -37,76 +35,127 @@ describe("/POST user", () => {
   });
 });
 
-
-//Login TDD 
-describe('/POST user', () => {
-  it('it should post the Login info', (done) => {
-      const user = {
-          email: " fadera@gmail.com",
-          password: "fadera123"
-         
-      };
-      chai.request(app)
-      .post('/api/v1/users/signin')
+//Login TDD
+describe("/POST user", () => {
+  it("it should post the Login info", (done) => {
+    const user = {
+      email: " fadera@gmail.com",
+      password: "fadera123",
+    };
+    chai
+      .request(app)
+      .post("/api/v1/users/signin")
       .send(user)
       .end((err, res) => {
-        
-          res.body.should.be.a('object');
-          //res.body.should.have.property('message');
-          done();
+        res.body.should.be.a("object");
+        //res.body.should.have.property('message');
+        done();
       });
   });
 });
-
 
 //Forget password TDD
-describe('/PUT/:id user', () => {
+describe("/PUT/:id user", () => {
   it("should  update the unapproved user status", (done) => {
-      const user = {
-        verified: 1,
-       
-      }
-      const userId = 2;
-       chai.request(app)
-       .put('/api/v1/users/forget'+ userId)
-       .send(user)
-       .end((err, res) => {
-           res.should.have.status(404);
-           res.body.should.be.a('object');
-           done();
-       });
-  });
-});
-
-
-//User registration approve TDD
-describe('/GET Unapproved', () => {
-  it('it should Get all unapproved list of users', (done) => {
-      chai.request(app)
-      .get('/api/v1/users/approve')
+    const user = {
+      verified: 1,
+    };
+    const userId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/users/forget" + userId)
+      .send(user)
       .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          done();
+        res.should.have.status(404);
+        res.body.should.be.a("object");
+        done();
       });
   });
 });
 
+//User registration approve TDD
+describe("/GET Unapproved", () => {
+  it("it should Get all unapproved list of users", (done) => {
+    chai
+      .request(app)
+      .get("/api/v1/users/approve")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
 
-describe('/PUT/:id user', () => {
+describe("/PUT/:id user", () => {
   it("should  update the unapproved user status", (done) => {
-      const user = {
-        verified: 1,
-       
-      }
-      const userId = 2;
-       chai.request(app)
-       .put('/api/v1/users/approve'+ userId)
-       .send(user)
-       .end((err, res) => {
-           res.should.have.status(404);
-           res.body.should.be.a('object');
-           done();
-       });
+    const user = {
+      verified: 1,
+    };
+    const userId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/users/approve" + userId)
+      .send(user)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+// for news TDD
+// for add news
+describe("/POST news", () => {
+  it("it should add the news info", (done) => {
+    const news = {
+      title: "Covid-19",
+      description: "Corona is bad man",
+      name: "Manish fadera",
+      image: "105541136_271223453973540_7056596063916093870_n.jpg",
+    };
+    chai
+      .request(app)
+      .post("/api/v1/news")
+      .send(news)
+      .end((err, res) => {
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+// for update news
+describe("/PUT/:id news", () => {
+  it("should  update the news info", (done) => {
+    const news = {
+      title: "Corona",
+      description: "Corona is increasing day by day with numerious dead",
+      name: "Raman Newar",
+    };
+    const newsId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/news" + newsId)
+      .send(news)
+      .end((err, res) => {
+        res.should.have.status(404);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+// for get news
+describe("/GET news", () => {
+  it("it should Get all news detail order by date", (done) => {
+    chai
+      .request(app)
+      .get("/api/v1/news")
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
   });
 });
