@@ -6,12 +6,13 @@ async function register(req, res) {
   const hashedPassword = bcrypt.hashSync(password, 10);
   try {
     const result = await user.findOne({
-      where: { email: req.body.email }
+      where: { email: req.body.email },
     });
     if (result) {
+      res.status(403);
       res.json({
-        status: false,
-        message: "Email already exit"
+        status: 403,
+        message: "Email already exists",
       });
     } else {
       user.create({
@@ -30,27 +31,21 @@ async function register(req, res) {
         password: hashedPassword,
         securityAnswer: req.body.securityAnswer,
       });
-
+      res.status(201);
       res.json({
-        status: true,
-        message: "User Register Successfully!"
+        status: 201,
+        message: "User Register Successfully!",
       });
     }
   } catch (error) {
-    console.log(error);
+    res.status(500);
     res.json({
-      status: false,
-      message: "Fail to register User"
+      status: 500,
+      message: error,
     });
   }
 }
 
-
-
-
-
-
 module.exports = {
   register,
-
 };

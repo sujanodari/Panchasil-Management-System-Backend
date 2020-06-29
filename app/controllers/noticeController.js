@@ -1,7 +1,5 @@
-var news = require("../models/newsModel.js");
+var notices = require("../models/noticeModel");
 var jwt = require("jsonwebtoken");
-var user = require("../models/UserModel.js");
-
 const SECRET_KEY = "secret_key";
 function notAuthenticated(res) {
   res.json({
@@ -24,24 +22,26 @@ function authenticate(token) {
     return false;
   }
 }
-
-async function addNews(req, res) {
+async function addNotice(req, res) {
   if (authenticate(req.headers.authorization) === false) {
     notAuthenticated(res);
     return;
   }
+  //console.log(req.body)
   try {
-    await news.create({
+    await notices.create({
       title: req.body.title,
       description: req.body.description,
       name: req.body.name,
       image: req.body.image,
     });
+    res.status(201);
     res.json({
       status: 201,
-      message: "news  added",
+      message: "Notice  added",
     });
   } catch (error) {
+    res.status(500);
     res.json({
       status: 500,
       message: "Error: " + error,
@@ -49,21 +49,26 @@ async function addNews(req, res) {
   }
 }
 
-async function getallNews(req, res) {
+async function getallNotice(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
   try {
-    const result = await news.findAll({
+    const result = await notices.findAll({
       order: [["createdAt", "DESC"]],
     });
     res.json(result);
   } catch (error) {
+    res.status(401);
     res.json({
-      status: 500,
+      status: 401,
       message: error,
     });
   }
 }
 
-async function updateNews(req, res) {
+async function updateNotice(req, res) {
   if (authenticate(req.headers.authorization) === false) {
     notAuthenticated(res);
     return;
@@ -82,12 +87,14 @@ async function updateNews(req, res) {
         },
       }
     );
+    res.status(201);
     res.json({
       status: 201,
-      message: "News Update successfully!",
+      message: "Notice Update successfully!",
     });
   } catch (error) {
     console.log(error);
+    res.status(500);
     res.json({
       status: 500,
       message: error,
@@ -96,9 +103,7 @@ async function updateNews(req, res) {
 }
 
 module.exports = {
-  addNews,
-  getallNews,
-  updateNews,
-  // decode,
-  // getUserByEmail,
+  addNotice,
+  getallNotice,
+  updateNotice,
 };
