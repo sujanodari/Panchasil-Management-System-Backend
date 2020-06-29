@@ -1,9 +1,9 @@
 var database = require("../config/dbConfig.js");
-var news = database.sequelize.define(
-  "news",
+var notice = database.sequelize.define(
+  "notice",
   {
     //attributes
-    newsId: {
+    noticeId: {
       type: database.Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -19,7 +19,6 @@ var news = database.sequelize.define(
       allowNull: false,
       require: true,
     },
-
     name: {
       type: database.Sequelize.TEXT,
       allowNull: false,
@@ -33,15 +32,15 @@ var news = database.sequelize.define(
     
   },
   {
-    freezeTableName: false,
-    tablesName: "news",
+    freezeTableName: true,
+    tablesName: "notice",
   }
 );
-news
+notice
   .sync({ force: false })
   .then(function () {})
   .catch(function (err) {
     console.log(err);
   });
 
-module.exports = news;
+module.exports = notice;

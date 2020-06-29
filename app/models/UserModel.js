@@ -1,5 +1,5 @@
 var database = require ("../config/dbConfig.js");
-var user=database.sequelize.define("Staff",{
+var user=database.sequelize.define("Users",{
     //attributes
  userId: {
       type: database.Sequelize.INTEGER,
@@ -80,9 +80,9 @@ var user=database.sequelize.define("Staff",{
       allowNull: true,
     },
     verified: {
-      type: database.Sequelize.BOOLEAN,
+      type: database.Sequelize.INTEGER,
       allowNull: false,
-      defaultValue:false,
+      defaultValue:0,
     },
     register: {
       type: database.Sequelize.DATE,
@@ -96,7 +96,7 @@ var user=database.sequelize.define("Staff",{
     
 },{
     freezeTableName:true,
-    tablesName:"Staff",
+    tablesName:"Users",
     paranoid: true,
 
 });
