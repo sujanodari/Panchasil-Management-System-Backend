@@ -24,6 +24,7 @@ const userApproved = require("./controllers/userApproved");
 const newsController = require("./controllers/newsController");
 const noticeController = require("./controllers/noticeController");
 const userTokenController=require('./controllers/userFromToken');
+const subjectController = require("./controllers/subjectController");
 
 //user registration routes
 app.post("/api/v1/users/signup", registrationController.register);
@@ -47,6 +48,13 @@ app.put("/api/v1/news/:id", newsController.updateNews);
 app.post("/api/v1/notice", noticeController.addNotice);
 app.get("/api/v1/notice", noticeController.getallNotice);
 app.put("/api/v1/notice/:id", noticeController.updateNotice);
+
+
+
+//subject route
+app.post("/api/v1/subjects", subjectController.addSubject);
+app.get("/api/v1/subjects", subjectController.getallSubject);
+app.put("/api/v1/subjects/:id", subjectController.updateSubject);
 
 //token decode route
 app.get("/api/v1/decode",userTokenController.userFromToken);

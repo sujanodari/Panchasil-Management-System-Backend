@@ -229,3 +229,75 @@ describe("/GET decode", () => {
       });
   });
 });
+
+
+//token for authorization
+var Token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE1OTM2ODY4MDd9.EfYymfVaDX_cj4P6JObV0Y6Qo4d-FkpkorUGw3EhfCg";
+
+
+
+// for Subject TDD
+// for add subject
+describe("Subject",function(){
+  describe("/POST Add subjects", () => {
+    it("it should add the subject,, provided token is authorized", (done) => {
+      const subjects = {
+        subjectName: "Maths"
+      };
+      chai
+        .request(app)
+        .post("/api/v1/subjects")
+        .set("Authorization",Token)
+        .send(subjects)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property("message").eql("Subject  added");
+          done();
+        });
+    });
+  });
+  });
+
+  
+
+// for Subject TDD
+// for getall subject
+describe("Subject",function(){
+  describe("/GET Get subjects", () => {
+    it("it should add the subject, provided token is authorized", (done) => {
+      chai
+        .request(app)
+        .get("/api/v1/subjects")
+        .set("Authorization",Token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+  });
+  
+// for Subject TDD
+// for update subject
+describe("Subject",function(){
+  describe("/PUT Update subjects", () => {
+    it("it should Update the subject, subject id and provided token is authorized", (done) => {
+      const subjects = {
+        subjectName: "Science"
+      };
+      var id= 1;
+      chai
+        .request(app)
+        .put("/api/v1/subjects/"+id)
+        .set("Authorization",Token)
+        .send(subjects)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property("message").eql("Subject Update successfully!");
+          done();
+        });
+    });
+  });
+  });
+
+  
