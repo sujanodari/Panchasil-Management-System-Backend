@@ -1,4 +1,5 @@
 var subject = require("../models/subjectModel.js");
+var subjectClass = require("../models/subjectClassModel.js");
 var jwt = require("jsonwebtoken");
 
 
@@ -62,27 +63,132 @@ async function getallSubject(req, res) {
   }
 }
 
-async function updateSubject(req, res) {
+async function deleteSubject(req, res) {
   if (authenticate(req.headers.authorization) === false) {
     notAuthenticated(res);
     return;
   }
-  //console.log(req.body);
+
   try {
-    await subject.update(
-      {
-        subjectName: req.body.subjectName
-      },
+    await subjectClass.destroy(
       {
         where: {
           subId: req.params.id,
         },
       }
     );
+
+  } catch (error) {
+
+  }
+  //console.log(req.body);
+  try {
+    await subject.destroy(
+      {
+        where: {
+          subId: req.params.id,
+        },
+      }
+    );
+    res.status(204);
+    res.json({
+      status: 204,
+      message: "Subject Deleted successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
+async function addSubjectClass(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  try {
+    await subjectClass.create({
+      subId: req.body.subId,
+      classId:req.body.classId
+    });
     res.status(201);
     res.json({
       status: 201,
-      message: "Subject Update successfully!",
+      message: "Subject added for class",
+    });
+  } catch (error) {
+    res.json({
+      status: 500,
+      message: "Error: " + error,
+    });
+  }
+}
+
+
+async function getallSubjectClass(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+  try {
+    const result = await subjectClass.findAll({
+      order: [["createdAt", "DESC"]],
+    });
+    res.status(200);
+    res.json(result);
+  } catch (error) {
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
+
+
+async function getStudentSubject(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+// id=classid
+  try {
+    const result = await subjectClass.findAll({
+      where: { classId: req.params.id}
+    });
+    res.status(200);
+    res.json(result);
+  } catch (error) {
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
+async function deleteSubjectClass(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+  //console.log(req.body);
+  try {
+    await subjectClass.destroy(
+      {
+        where: {
+          subclassId: req.params.id,
+        },
+      }
+    );
+    res.status(204);
+    res.json({
+      status: 204,
+      message: "Subject Deleted successfully!",
     });
   } catch (error) {
     console.log(error);
@@ -96,5 +202,9 @@ async function updateSubject(req, res) {
 module.exports = {
   addSubject,
   getallSubject,
-  updateSubject
+  deleteSubject,
+  addSubjectClass,
+  getallSubjectClass,
+  deleteSubjectClass,
+  getStudentSubject
 };

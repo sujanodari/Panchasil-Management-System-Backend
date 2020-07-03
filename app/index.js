@@ -25,6 +25,7 @@ const newsController = require("./controllers/newsController");
 const noticeController = require("./controllers/noticeController");
 const userTokenController=require('./controllers/userFromToken');
 const subjectController = require("./controllers/subjectController");
+const classController=require('./controllers/classController')
 
 //user registration routes
 app.post("/api/v1/users/signup", registrationController.register);
@@ -49,12 +50,21 @@ app.post("/api/v1/notice", noticeController.addNotice);
 app.get("/api/v1/notice", noticeController.getallNotice);
 app.put("/api/v1/notice/:id", noticeController.updateNotice);
 
-
+//class Route
+app.get('/api/v1/class', classController.getallClass)
 
 //subject route
 app.post("/api/v1/subjects", subjectController.addSubject);
 app.get("/api/v1/subjects", subjectController.getallSubject);
-app.put("/api/v1/subjects/:id", subjectController.updateSubject);
+app.delete("/api/v1/subjects/:id", subjectController.deleteSubject);
+
+//subject Class
+app.post("/api/v1/subjectsClass", subjectController.addSubjectClass);
+app.get("/api/v1/subjectsClass", subjectController.getallSubjectClass);
+app.delete("/api/v1/subjectsClass/:id", subjectController.deleteSubjectClass);
+
+//student subject
+app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
 
 //token decode route
 app.get("/api/v1/decode",userTokenController.userFromToken);
