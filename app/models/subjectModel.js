@@ -17,7 +17,7 @@ var subjectModel = database.sequelize.define(
     
   },
   {
-    freezeTableName: false,
+    freezeTableName: true,
     tablesName: "subjects",
   }
 );

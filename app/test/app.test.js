@@ -264,7 +264,7 @@ describe("Subject",function(){
 // for getall subject
 describe("Subject",function(){
   describe("/GET Get subjects", () => {
-    it("it should add the subject, provided token is authorized", (done) => {
+    it("it should get the subject, provided token is authorized", (done) => {
       chai
         .request(app)
         .get("/api/v1/subjects")
@@ -278,26 +278,108 @@ describe("Subject",function(){
   });
   
 // for Subject TDD
-// for update subject
+// for delete subject
 describe("Subject",function(){
-  describe("/PUT Update subjects", () => {
-    it("it should Update the subject, subject id and provided token is authorized", (done) => {
+  describe("/DELETE  subjects", () => {
+    it("it should Delete the subject, subject id and provided token is authorized", (done) => {
       const subjects = {
         subjectName: "Science"
       };
       var id= 1;
       chai
         .request(app)
-        .put("/api/v1/subjects/"+id)
+        .delete("/api/v1/subjects/"+id)
         .set("Authorization",Token)
-        .send(subjects)
         .end((err, res) => {
-          res.should.have.status(201);
-          res.body.should.have.property("message").eql("Subject Update successfully!");
+          res.should.have.status(204);
+          res.body.should.have.property("message").eql("Subject Deleted successfully!");
           done();
         });
     });
   });
   });
 
+
+  
+
+  //////////////////
+  // for Subject TDD
+// for add subject
+describe("Subject Class",function(){
+  describe("/POST Add subjects for Clss", () => {
+    it("it should add the subject for class, provided token is authorized", (done) => {
+      const subjects = {
+        subId:2,
+        classId:1
+      };
+      chai
+        .request(app)
+        .post("/api/v1/subjectsClass")
+        .set("Authorization",Token)
+        .send(subjects)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.have.property("message").eql("Subject added for class");
+          done();
+        });
+    });
+  });
+  });
+
+  
+
+// for Subject TDD
+// for getall subject
+describe("Subject Class",function(){
+  describe("/GET Get subjects of class", () => {
+    it("it should get the subject form, provided token is authorized", (done) => {
+      chai
+        .request(app)
+        .get("/api/v1/subjectsClass")
+        .set("Authorization",Token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+  });
+  
+// for Subject TDD
+// for delete subject
+describe("Subject Class",function(){
+  describe("/DELETE  subjects class", () => {
+    it("it should Delete the subject for class, subject id and provided token is authorized", (done) => {
+      const subjects = {
+        subjectName: "Science"
+      };
+      var id= 1;
+      chai
+        .request(app)
+        .delete("/api/v1/subjectsClass/"+id)
+        .set("Authorization",Token)
+        .end((err, res) => {
+          res.should.have.status(204);
+          res.body.should.have.property("message").eql("Subject Deleted successfully!");
+          done();
+        });
+    });
+  });
+  });
+//get subject ID from class id
+describe("Subject Class",function(){
+  describe("/GET Get subjects id for students of class", () => {
+    it("it should get the subject id form, provided token is authorized", (done) => {
+      var id= 5;
+      chai
+        .request(app)
+        .get("/api/v1/student/subject/"+id)
+        .set("Authorization",Token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          done();
+        });
+    });
+  });
+  });
   
