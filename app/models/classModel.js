@@ -9,7 +9,7 @@ var classes =database.sequelize.define('Classes',{
         allowNull: false,
       },
       class:{
-        type: database.Sequelize.ENUM('PG', 'Nursery', '1','2','3','4','5','6','7','8','9','10'),
+        type: database.Sequelize.ENUM('PG', 'Nursery','KG', '1','2','3','4','5','6','7','8','9','10'),
         allowNull: false,
         require:true,
       },
@@ -22,7 +22,7 @@ var classes =database.sequelize.define('Classes',{
 },{
     freezeTableName:true,
     tablesName:"Classes",
-    paranoid: true,
+    paranoid: false,
 })
 classes.sync({force:false})
 .then(function(){
