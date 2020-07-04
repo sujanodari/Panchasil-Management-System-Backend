@@ -19,6 +19,7 @@ var subjectModel = database.sequelize.define(
   {
     freezeTableName: true,
     tablesName: "subjects",
+    paranoid: false,
   }
 );
 subjectModel

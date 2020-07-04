@@ -21,6 +21,7 @@ var database = require("../config/dbConfig.js");
     {
       freezeTableName: true,
       tablesName: "subjectsClass",
+      paranoid: false,
     }
   );
   subjectClassModel

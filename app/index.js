@@ -24,14 +24,21 @@ const userApproved = require("./controllers/userApproved");
 const newsController = require("./controllers/newsController");
 const noticeController = require("./controllers/noticeController");
 const userTokenController=require('./controllers/userFromToken');
-const subjectController = require("./controllers/subjectController");
+const userController = require('./controllers/userController')
 const classController=require('./controllers/classController')
+const subjectController = require("./controllers/subjectController");
 
 //user registration routes
 app.post("/api/v1/users/signup", registrationController.register);
 
+
 //login routes
 app.post("/api/v1/users/signin", loginController.login);
+
+//user routes
+app.get("/api/v1/users", userController.getallUsers)
+app.get("/api/v1/users/staff", userController.getallUsersStaff)
+app.get("/api/v1/users/student", userController.getallUsersStudent)
 
 //forget password routes
 app.put("/api/v1/users/forget", forgotPassword.forgetPassword);
@@ -40,18 +47,17 @@ app.put("/api/v1/users/forget", forgotPassword.forgetPassword);
 app.get("/api/v1/approve", userApproved.getApproved);
 app.put("/api/v1/approve/:id", userApproved.approveRegister);
 
-//news route
-app.post("/api/v1/news", newsController.addNews);
-app.get("/api/v1/news", newsController.getallNews);
-app.put("/api/v1/news/:id", newsController.updateNews);
-
-// for Notice route
-app.post("/api/v1/notice", noticeController.addNotice);
-app.get("/api/v1/notice", noticeController.getallNotice);
-app.put("/api/v1/notice/:id", noticeController.updateNotice);
-
-//class Route
+//class route
+app.post('/api/v1/class', classController.addclass)
 app.get('/api/v1/class', classController.getallClass)
+app.get('/api/v1/class/student/:id', classController.getStudentClass)
+app.delete('/api/v1/class/:id', classController.deleteClass)
+
+
+//enroll
+app.get('/api/v1/enroll', classController.getallEnrolls)
+app.post('/api/v1/enroll/:id', classController.enrollStudent)
+app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
 
 //subject route
 app.post("/api/v1/subjects", subjectController.addSubject);
@@ -65,6 +71,16 @@ app.delete("/api/v1/subjectsClass/:id", subjectController.deleteSubjectClass);
 
 //student subject
 app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
+
+//news route
+app.post("/api/v1/news", newsController.addNews);
+app.get("/api/v1/news", newsController.getallNews);
+app.put("/api/v1/news/:id", newsController.updateNews);
+
+// for Notice route
+app.post("/api/v1/notice", noticeController.addNotice);
+app.get("/api/v1/notice", noticeController.getallNotice);
+app.put("/api/v1/notice/:id", noticeController.updateNotice);
 
 //token decode route
 app.get("/api/v1/decode",userTokenController.userFromToken);

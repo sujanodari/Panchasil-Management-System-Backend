@@ -95,9 +95,9 @@ var user=database.sequelize.define("Users",{
     }
     
 },{
-    freezeTableName:true,
+    freezeTableName:false,
     tablesName:"Users",
-    paranoid: true,
+    paranoid: false,
 
 });
 user.sync({force:false})

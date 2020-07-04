@@ -1,6 +1,6 @@
 var news = require("../models/newsModel.js");
 var jwt = require("jsonwebtoken");
-var user = require("../models/UserModel.js");
+
 
 const SECRET_KEY = "secret_key";
 function notAuthenticated(res) {
