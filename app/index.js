@@ -17,73 +17,67 @@ app.use(morgan('tiny'));
 app.use(express.static(__dirname+ "/public"))
 
 
-const registrationController = require("./controllers/registrationController");
-const loginController = require("./controllers/loginController");
-const forgotPassword = require("./controllers/forgotPassword");
-const userApproved = require("./controllers/userApproved");
-const newsController = require("./controllers/newsController");
-const noticeController = require("./controllers/noticeController");
-const userTokenController=require('./controllers/userFromToken');
-const userController = require('./controllers/userController')
-const classController=require('./controllers/classController')
-const subjectController = require("./controllers/subjectController");
-
 //user registration routes
+const registrationController = require("./controllers/registrationController");
 app.post("/api/v1/users/signup", registrationController.register);
 
-
 //login routes
+const loginController = require("./controllers/loginController");
 app.post("/api/v1/users/signin", loginController.login);
 
-//user routes
-app.get("/api/v1/users", userController.getallUsers)
-app.get("/api/v1/users/staff", userController.getallUsersStaff)
-app.get("/api/v1/users/student", userController.getallUsersStudent)
-
 //forget password routes
+const forgotPassword = require("./controllers/forgotPassword");
 app.put("/api/v1/users/forget", forgotPassword.forgetPassword);
 
 //Approve registration 
+const userApproved = require("./controllers/userApproved");
 app.get("/api/v1/approve", userApproved.getApproved);
 app.put("/api/v1/approve/:id", userApproved.approveRegister);
 
-//class route
-app.post('/api/v1/class', classController.addclass)
-app.get('/api/v1/class', classController.getallClass)
-app.get('/api/v1/class/student/:id', classController.getStudentClass)
-app.delete('/api/v1/class/:id', classController.deleteClass)
-
-
-//enroll
-app.get('/api/v1/enroll', classController.getallEnrolls)
-app.post('/api/v1/enroll/:id', classController.enrollStudent)
-app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
-
-//subject route
-app.post("/api/v1/subjects", subjectController.addSubject);
-app.get("/api/v1/subjects", subjectController.getallSubject);
-app.delete("/api/v1/subjects/:id", subjectController.deleteSubject);
-
-//subject Class
-app.post("/api/v1/subjectsClass", subjectController.addSubjectClass);
-app.get("/api/v1/subjectsClass", subjectController.getallSubjectClass);
-app.delete("/api/v1/subjectsClass/:id", subjectController.deleteSubjectClass);
-
-//student subject
-app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
+//token decode route
+const userTokenController=require('./controllers/userFromToken');
+app.get("/api/v1/decode",userTokenController.userFromToken);
 
 //news route
+const newsController = require("./controllers/newsController");
 app.post("/api/v1/news", newsController.addNews);
 app.get("/api/v1/news", newsController.getallNews);
 app.put("/api/v1/news/:id", newsController.updateNews);
 
 // for Notice route
+const noticeController = require("./controllers/noticeController");
 app.post("/api/v1/notice", noticeController.addNotice);
 app.get("/api/v1/notice", noticeController.getallNotice);
 app.put("/api/v1/notice/:id", noticeController.updateNotice);
 
-//token decode route
-app.get("/api/v1/decode",userTokenController.userFromToken);
+//user routes
+const userController = require('./controllers/userController')
+app.get("/api/v1/users", userController.getallUsers)
+app.get("/api/v1/users/staff", userController.getallUsersStaff)
+app.get("/api/v1/users/student", userController.getallUsersStudent)
+app.put("/api/v1/users/:id",userController.updateUserDetails);
+app.delete("/api/v1/users/:id",userController.deleteUser);
+app.get("/api/v1/users/:id",userController.getUserById);
+
+//class route
+const classController=require('./controllers/classController')
+app.post('/api/v1/class', classController.addclass)
+app.get('/api/v1/class', classController.getallClass)
+app.get('/api/v1/class/student/:id', classController.getStudentClass)
+app.delete('/api/v1/class/:id', classController.deleteClass)
+app.get('/api/v1/enroll', classController.getallEnrolls)
+app.post('/api/v1/enroll/:id', classController.enrollStudent)
+app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
+
+//subject route
+const subjectController = require("./controllers/subjectController");
+app.post("/api/v1/subjects", subjectController.addSubject);
+app.get("/api/v1/subjects", subjectController.getallSubject);
+app.delete("/api/v1/subjects/:id", subjectController.deleteSubject);
+app.post("/api/v1/subjectsClass", subjectController.addSubjectClass);
+app.get("/api/v1/subjectsClass", subjectController.getallSubjectClass);
+app.delete("/api/v1/subjectsClass/:id", subjectController.deleteSubjectClass);
+app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
 
 //image upload
 const multer = require('multer');
