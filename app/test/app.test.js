@@ -535,6 +535,30 @@ const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbW
   //   });
   // });
 
+  // // for Search TDD
+
+describe("Search",function(){
+  describe("/GET  search", () => {
+    it("it should search the subject, subject id and provided token is authorized", (done) => {
+      const searchs = {
+        name: "Prabin"
+      };
+     
+      chai
+        .request(app)
+        .get("/api/v1/search")
+           .send (searchs)
+        .set("Authorization",Token)
+        .end((err, res) => {
+          res.should.have.status(200);
+          
+          done();
+        });
+    });
+  });
+  });
+
+
 
 
 
