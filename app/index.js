@@ -68,7 +68,8 @@ app.delete('/api/v1/class/:id', classController.deleteClass)
 app.get('/api/v1/enroll', classController.getallEnrolls)
 app.post('/api/v1/enroll/:id', classController.enrollStudent)
 app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
-
+app.put('/api/v1/routine/:id', classController.updateRoutine)
+app.delete('/api/v1/routine/:id', classController.deleteRoutine)
 //subject route
 const subjectController = require("./controllers/subjectController");
 app.post("/api/v1/subjects", subjectController.addSubject);
