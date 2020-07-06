@@ -18,6 +18,12 @@ var classes =database.sequelize.define('Classes',{
             allowNull:false,
             require:true
       },
+      routine:{
+        type: database.Sequelize.TEXT,
+      allowNull: true,
+      require:false,
+      defaultValue:null
+      }
 
 },{
     freezeTableName:true,
