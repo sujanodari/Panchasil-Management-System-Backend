@@ -279,6 +279,79 @@ async function deleteClass(req,res){
 }
 
 
+async function updateRoutine(req, res) {
+  console.log(req.body.routine)
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    try {
+      await Classes.update(
+        {
+          routine: req.body.routine,
+          
+        },
+        {
+          where: {
+            classId: req.params.id,
+          },
+        }
+      );
+      res.status(201);
+      res.json({
+        status: 201,
+        message: "Routine update successfully!",
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500);
+      res.json({
+        status: 500,
+        message: error,
+      });
+    }
+  }
+   
+  async function deleteRoutine(req, res) {
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    if (req.params.id === null) {
+      res.status(403);
+      res.json({
+        status: 403,
+        message: "Class ID is not provided"
+      });
+    } else {
+      Classes.destroy({
+        where: {
+          classId: req.params.id,
+        }
+      })
+        .then(function (result) {
+          if (result === 0) {
+            res.status(404);
+            res.json({
+              status: 404,
+              message: "Class routine not found"
+            });
+          } else {
+          }
+          res.status(200);
+          res.json({ status: 200, message: "successfully deleted" });
+        })
+        .catch(function (err) {
+          console.log(error);
+          res.status(500)
+          res.json({
+            status: 500,
+            message: error
+          });
+        });
+    }
+  }
+
 module.exports={
     addclass,
     getallClass,
@@ -286,6 +359,9 @@ module.exports={
     getallEnrolls,
     getStudentClass,
     deleteClass,
-    deleteEnroll
+    deleteEnroll,
+    updateRoutine,
+    deleteRoutine,
+  
 }
 
