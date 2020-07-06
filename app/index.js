@@ -25,6 +25,11 @@ app.post("/api/v1/users/signup", registrationController.register);
 const loginController = require("./controllers/loginController");
 app.post("/api/v1/users/signin", loginController.login);
 
+//search
+const searchController = require("./controllers/searchController")
+app.get("/api/v1/search", searchController.getallUsers);
+
+
 //forget password routes
 const forgotPassword = require("./controllers/forgotPassword");
 app.put("/api/v1/users/forget", forgotPassword.forgetPassword);
