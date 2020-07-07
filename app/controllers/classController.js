@@ -3,6 +3,7 @@ var Enroll = require("../models/Enroll");
 var jwt = require("jsonwebtoken");
 const user = require("../models/UserModel");
 
+
 const SECRET_KEY = "secret_key";
 function notAuthenticated(res) {
   res.json({
@@ -371,31 +372,32 @@ async function deleteRoutine(req, res) {
       message: "Class ID is not provided",
     });
   } else {
-    Classes.destroy({
-      where: {
-        classId: req.params.id,
+    const result=Classes.findOne(
+      {
+        where: { classId: req.params.id },
+      }
+    )
+
+    if(result){
+      Classes.update({
+        routine:null
       },
-    })
-      .then(function (result) {
-        if (result === 0) {
-          res.status(404);
-          res.json({
-            status: 404,
-            message: "Class routine not found",
-          });
-        } else {
-        }
-        res.status(200);
-        res.json({ status: 200, message: "successfully deleted" });
+      {
+        where: {
+          classId: req.params.id,
+        },
+      }
+      )
+      res.status(200);
+      res.json({ status: 200, message: "successfully deleted" });
+
+    }else{
+      res.status(404)
+      res.json({
+        status:404,
+        message:'Class not found'
       })
-      .catch(function (err) {
-        console.log(error);
-        res.status(500);
-        res.json({
-          status: 500,
-          message: error,
-        });
-      });
+    }
   }
 }
 
