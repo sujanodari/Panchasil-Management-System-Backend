@@ -106,72 +106,7 @@ async function enrollStudent(req, res) {
   }
 }
 
-// for enroll teacher
 
-async function enrollTeacher(req, res) {
-  if (authenticate(req.headers.authorization) === false) {
-    notAuthenticated(res);
-    return;
-  }
-  try {
-    const result = await user.findOne({
-      where: { userId: req.params.id },
-    });
-    if (result) {
-      try {
-        const result = await Classes.findOne({
-          where: [{ class: req.body.class, section: req.body.section }],
-        });
-        if (result) {
-          let class_id = result.dataValues.classId;
-
-          try {
-            await Enroll.create({
-              class_id: class_id,
-              user_id: req.params.id,
-              year: req.body.year,
-            });
-            res.status(201);
-            res.json({
-              status: 201,
-              message: "Teacher  Enrolled",
-            });
-          } catch (error) {
-            res.status(500);
-            res.json({
-              status: 500,
-              message: "Error: " + error,
-            });
-          }
-        } else {
-          res.status(403);
-          res.json({
-            status: 403,
-            message: "Class not found",
-          });
-        }
-      } catch (err) {
-        res.status(500);
-        res.json({
-          status: 500,
-          message: err,
-        });
-      }
-    } else {
-      res.status(405);
-      res.json({
-        status: 405,
-        message: "User not found",
-      });
-    }
-  } catch (err) {
-    res.status(500);
-    res.json({
-      status: 500,
-      message: err,
-    });
-  }
-}
 
 async function addclass(req, res) {
   if (authenticate(req.headers.authorization) === false) {
@@ -405,7 +340,6 @@ module.exports = {
   addclass,
   getallClass,
   enrollStudent,
-  enrollTeacher,
   getallEnrolls,
   getStudentClass,
   deleteClass,
