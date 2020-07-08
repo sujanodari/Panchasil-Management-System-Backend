@@ -139,6 +139,28 @@ async function addclass(req, res) {
   }
 }
 
+async function getAllEnrollsByClass(req,res){
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  try{
+    const result=await Enroll.findAll({
+      where:[{class_id:req.params.id}]
+    })
+    res.status(201)
+    res.json(result)
+  }catch(err){
+    res.status(500)
+    res.json({
+      status:500,
+      message:err
+    })
+  }
+
+  
+}
+
 async function getallEnrolls(req, res) {
   if (authenticate(req.headers.authorization) === false) {
     notAuthenticated(res);
@@ -346,4 +368,5 @@ module.exports = {
   deleteEnroll,
   updateRoutine,
   deleteRoutine,
+  getAllEnrollsByClass
 };
