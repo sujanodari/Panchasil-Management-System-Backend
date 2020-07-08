@@ -63,7 +63,8 @@ app.get("/api/v1/users/student", userController.getallUsersStudent)
 app.put("/api/v1/users/:id",userController.updateUserDetails);
 app.delete("/api/v1/users/:id",userController.deleteUser);
 app.get("/api/v1/users/:id",userController.getUserById);
-
+app.put("/api/v1/users/add/attendence/:id",userController.addAttendence);
+app.put("/api/v1/users/sub/attendence/:id",userController.subAttendence);
 //class route
 const classController=require('./controllers/classController')
 app.post('/api/v1/class', classController.addclass)
@@ -71,6 +72,7 @@ app.get('/api/v1/class', classController.getallClass)
 app.get('/api/v1/class/student/:id', classController.getStudentClass)
 app.delete('/api/v1/class/:id', classController.deleteClass)
 app.get('/api/v1/enroll', classController.getallEnrolls)
+app.get('/api/v1/enroll/class/:id', classController.getAllEnrollsByClass)
 app.post('/api/v1/enroll/:id', classController.enrollStudent)
 app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
 app.put('/api/v1/routine/:id', classController.updateRoutine)

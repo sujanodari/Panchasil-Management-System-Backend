@@ -124,6 +124,87 @@ async function getallUsers(req, res) {
     }
   }
 
+  async function addAttendence(req, res) {
+
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    try {
+      const result= await Users.findOne({
+        where:{userId:req.params.id}
+      })
+      if(result){
+        Users.update({
+          attendance:result.attendance+1
+        },
+        {where:[{
+          userId:req.params.id,
+          userType:'Student'
+        }]})
+        res.status(200)
+        res.json({
+          status:200,
+          message:"Attendence added"
+        })
+      }else{
+        res.status(404)
+        res.json({
+          status:404,
+          message:'User Not found'
+        })
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500);
+      res.json({
+        status: 500,
+        message: error,
+      });
+    }
+  }
+
+  async function subAttendence(req, res) {
+
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    try {
+      const result= await Users.findOne({
+        where:{userId:req.params.id}
+      })
+      if(result){
+        Users.update({
+          attendance:result.attendance-1
+        },
+        {where:[{
+          userId:req.params.id,
+          userType:'Student'
+        }]})
+        res.status(200)
+        res.json({
+          status:200,
+          message:"Attendence subtracted"
+        })
+      }else{
+        res.status(404)
+        res.json({
+          status:404,
+          message:'User Not found'
+        })
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500);
+      res.json({
+        status: 500,
+        message: error,
+      });
+    }
+  }
+
+
   async function deleteUser(req, res) {
     if (authenticate(req.headers.authorization) === false) {
       notAuthenticated(res);
@@ -220,4 +301,6 @@ async function getallUsers(req, res) {
       updateUserDetails,
       deleteUser,
       getUserById,
+      addAttendence,
+      subAttendence
   }
