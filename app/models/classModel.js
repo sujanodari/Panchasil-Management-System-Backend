@@ -23,9 +23,24 @@ var classes =database.sequelize.define('Classes',{
       allowNull: true,
       require:false,
       defaultValue:null
-      }
+      },
 
-},{
+      tuition:{
+        type: database.Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue:0,
+      },
+      eca:{
+        type: database.Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue:0,
+      },
+      trans:{
+        type: database.Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue:0,
+      },
+     },{
     freezeTableName:true,
     tablesName:"Classes",
     paranoid: false,
@@ -39,4 +54,3 @@ classes.sync({force:false})
 });
 
 module.exports=classes;
-

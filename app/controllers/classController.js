@@ -358,6 +358,77 @@ async function deleteRoutine(req, res) {
   }
 }
 
+async function addFees (req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+try 
+{
+
+  await Classes.update(
+
+    {
+      
+      eca:req.body.eca,
+      trans:req.body.trans,
+      tuition:req.body.tuition,
+    },
+    {
+      where: {
+        classId: req.params.id,
+      },
+    }
+  );
+  res.status(201);
+  res.json({
+    status: 201,
+    message: "Fee added successfully!",
+  });
+}
+catch (error) {
+  res.status(500);
+  res.json({
+    status: 500,
+    message: error,
+  });
+}
+
+}
+async function getClassById (req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+
+  }
+  try{
+
+    const result = await Classes.findOne({
+      where: {
+        classId: req.params.id
+      }
+    })
+   if (result) {
+     res.status(200)
+     res.json(result)
+   }
+   else {
+    res.status(404)
+    res.json({
+      status: 404,
+      message: "class not found "
+    })
+   }
+  }
+  catch (error) {
+    res.status(500);
+  res.json({
+    status: 500,
+    message: error,
+  });
+  }
+}
+
 module.exports = {
   addclass,
   getallClass,
@@ -368,5 +439,8 @@ module.exports = {
   deleteEnroll,
   updateRoutine,
   deleteRoutine,
-  getAllEnrollsByClass
+  addFees,
+  getClassById, 
+  getAllEnrollsByClass,
+
 };
