@@ -65,6 +65,7 @@ app.delete("/api/v1/users/:id",userController.deleteUser);
 app.get("/api/v1/users/:id",userController.getUserById);
 app.put("/api/v1/users/add/attendence/:id",userController.addAttendence);
 app.put("/api/v1/users/sub/attendence/:id",userController.subAttendence);
+
 //class route
 const classController=require('./controllers/classController')
 app.post('/api/v1/class', classController.addclass)
@@ -77,6 +78,8 @@ app.post('/api/v1/enroll/:id', classController.enrollStudent)
 app.delete('/api/v1/enroll/:id', classController.deleteEnroll)
 app.put('/api/v1/routine/:id', classController.updateRoutine)
 app.delete('/api/v1/routine/:id', classController.deleteRoutine)
+app.put('/api/v1/fee/:id', classController.addFees)
+app.get('/api/v1/class/:id', classController.getClassById)
 //subject route
 const subjectController = require("./controllers/subjectController");
 app.post("/api/v1/subjects", subjectController.addSubject);
@@ -90,6 +93,12 @@ app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
 //image upload
 const multer = require('multer');
 const path = require('path');
+
+//fee route
+const feeController = require ("./controllers/feeController");
+app.post("/api/v1/fees", feeController.addFee);
+app.get("/api/v1/fees", feeController.getFee);
+app.get("/api/v1/fees/:id", feeController.getFeeById);
 
 const storage = multer.diskStorage({
   destination: './public/images',
