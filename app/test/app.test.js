@@ -537,28 +537,141 @@ const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbW
 
   // // for Search TDD
 
-describe("Search",function(){
-  describe("/GET  search", () => {
-    it("it should search the subject, subject id and provided token is authorized", (done) => {
-      const searchs = {
-        name: "Prabin"
-      };
+// describe("Search",function(){
+//   describe("/GET  search", () => {
+//     it("it should search the subject, subject id and provided token is authorized", (done) => {
+//       const searchs = {
+//         name: "Prabin"
+//       };
      
-      chai
-        .request(app)
-        .get("/api/v1/search")
-           .send (searchs)
-        .set("Authorization",Token)
-        .end((err, res) => {
-          res.should.have.status(200);
+//       chai
+//         .request(app)
+//         .get("/api/v1/search")
+//            .send (searchs)
+//         .set("Authorization",Token)
+//         .end((err, res) => {
+//           res.should.have.status(200);
           
-          done();
-        });
+//           done();
+//         });
+//     });
+//   });
+//   });
+
+
+  describe("Fee",function(){
+
+    describe("/Post  fee", () => {
+      it("it should add fee if provided token is authorized", (done) => {
+        const fees = {
+         fullName: "Sujan Odari",
+         class: "1",
+         section: "A",
+         tuition: 2000,
+         eca: 100,
+         trans: 2000,
+         examfee: 200,
+         lastdue: 150
+        };
+       
+        chai
+          .request(app)
+          .post("/api/v1/fees")
+             .send (fees)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            
+            done();
+          });
+      });
     });
+
+    describe("/get  fee", () => {
+      it("it should get fee and provided token is authorized", (done) => {
+       
+        chai
+          .request(app)
+          .get("/api/v1/fees")
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            
+            done();
+          });
+      });
+    });
+
+    describe("/get  fee by id", () => {
+      it("it should get fee, id is provided and provided token is authorized", (done) => {
+       var id=1;
+        chai
+          .request(app)
+          .get("/api/v1/fees/"+id)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            done();
+          });
+      });
+    });
+
+
+    describe("/update  class fee by id", () => {
+      it("it should update fee, id is provided and provided token is authorized", (done) => {
+       var userId=1;
+       const fee = {
+        eca: 100,
+        trans: 2000,
+        tuition: 3000
+       };
+      
+        chai
+          .request(app)
+          .put("/api/v1/fee/"+userId)
+          .send(fee)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            done();
+          });
+      });
+    });
+    
   });
+  
+  describe("Attendence",function(){
+
+
+    describe("/add  student attendence by id", () => {
+      it("it should add attendence, studentId is provided and provided token is authorized", (done) => {
+       var studentId=1;
+        chai
+          .request(app)
+          .put("/api/v1/users/add/attendence/"+studentId)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(200);
+            done();
+          });
+      });
+    });
+
+
+
+    describe("/sub  student attendence by id", () => {
+      it("it should sub attendence, studentId is provided and provided token is authorized", (done) => {
+       var studentId=1;
+        chai
+          .request(app)
+          .put("/api/v1/users/sub/attendence/"+studentId)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(200);
+            done();
+          });
+      });
+    });
+
   });
-
-
-
-
-
+  
