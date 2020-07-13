@@ -71,6 +71,8 @@ async function getallUsers(req, res) {
         parentName: result[0].parentName,
         parentAddress: result[0].parentAddress,
         parentContact: result[0].parentContact,
+        amount:result[0].amount,
+        userType:result[0].userType
         };
   
   console.log(data)
@@ -101,7 +103,7 @@ async function getallUsers(req, res) {
           parentName: req.body.parentName,
           parentAddress: req.body.parentAddress,
           parentContact: req.body.parentContact,
-          
+          amount:req.body.amount,
         },
         {
           where: {
