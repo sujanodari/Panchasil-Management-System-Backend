@@ -17,6 +17,13 @@ var fees =database.sequelize.define('Fees',{
         allowNull: false,
         require:true,
       },
+
+      email: {
+        type: database.Sequelize.TEXT,
+        allowNull: false,
+        require:true,
+      },
+       
        
       class:{
         type: database.Sequelize.ENUM('PG', 'Nursery','KG', '1','2','3','4','5','6','7','8','9','10'),
@@ -54,7 +61,6 @@ var fees =database.sequelize.define('Fees',{
      lastdue:{
      type: database.Sequelize.INTEGER,
      allowNull: true,
-   
   }
     },{
    freezeTableName:false,

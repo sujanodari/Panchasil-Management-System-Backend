@@ -95,10 +95,14 @@ const multer = require('multer');
 const path = require('path');
 
 //fee route
+
 const feeController = require ("./controllers/feeController");
 app.post("/api/v1/fees", feeController.addFee);
 app.get("/api/v1/fees", feeController.getFee);
 app.get("/api/v1/fees/:id", feeController.getFeeById);
+app.delete("/api/v1/fees/:id", feeController.deleteFee);
+app.get("/api/v1/fee", feeController.getUserByEmail);
+
 
 const storage = multer.diskStorage({
   destination: './public/images',

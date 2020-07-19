@@ -1,6 +1,7 @@
 var Fees = require("../models/feeModel");
 const SECRET_KEY = "secret_key";
 var jwt = require("jsonwebtoken");
+var User = require ("../models/UserModel")
 
 function notAuthenticated(res) {
     res.json({
@@ -32,6 +33,7 @@ function notAuthenticated(res) {
 
       Fees.create({
          fullName: req.body.fullName,
+         email: req.body.email,
          class: req.body.class,
          section: req.body.section,
          tuition: req.body.tuition,
@@ -71,7 +73,6 @@ function notAuthenticated(res) {
     }
   }
 
-  
   async function getFeeById(req, res) {
     if (authenticate(req.headers.authorization) === false) {
       notAuthenticated(res);
@@ -91,6 +92,7 @@ function notAuthenticated(res) {
       const data = {
         
         fullName: result[0].fullName,
+        email: result[0].email,
         class: result[0].class,
         section: result[0].section,
         tuition: result[0].tuition,
@@ -112,7 +114,60 @@ function notAuthenticated(res) {
       });
     }
   }
+  async function deleteFee(req, res) {
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    try {
+      Fees.destroy({
+        where: { feesID: req.params.id },
+      });
+  
+      res.status(201);
+      res.json({
+        status: 201,
+        message: "Fee Deleted with id " + req.params.id,
+      });
+    } catch (err) {
+      res.status(500);
+      res.json({
+        status: 500,
+        message: err,
+      });
+    }
+  }
 
+  async function getUserByEmail(req, res) {
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
 
+    const SECRET_KEY = "secret_key";
+  let data;
+  data = jwt.verify(req.headers.authorization, SECRET_KEY);
+  var email = data.userEmail;
+  
+    try {
+      const result = await Fees.findOne({
+        where: {
+          
+          email: email,
+            
+          
+        }
+      });
+
+      res.status(201)
+      res.json(result);
+    } catch (error) {
+      res.status(500)
+      res.json({
+        status: 500,
+        message: error
+      });
+    }
+  }
   module.exports= {
-    addFee, getFee, getFeeById }
+    addFee, getFee, getFeeById, deleteFee, getUserByEmail}
