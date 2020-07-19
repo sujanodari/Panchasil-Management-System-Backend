@@ -3,6 +3,8 @@ process.env.NODE_ENV = "test";
 var chai = require("chai");
 var chaiHttp = require("chai-http");
 var app = require("../index");
+const fees = require("../models/feeModel");
+//const { getUserByEmail } = require("../controllers/feeController");
 const should = chai.should();
 chai.use(chaiHttp);
 
@@ -385,7 +387,7 @@ chai.use(chaiHttp);
   
 
 
-const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE1OTM2NTk5Mzh9.wZNcOMHb2sQpsUt6H3z5g7kJ0G4D-kRr21pithnOolQ'
+//const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJzdWphbkBnbWFpbC5jb20iLCJpYXQiOjE1OTUxNDM5NDV9.TwradLndCqPMaLhMmWStAiG-uQXf9JVbdCTyOOvce_o'
 //for add class
 
 // describe("/Add Class", () => {
@@ -559,18 +561,153 @@ const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbW
 //   });
 
 
-  describe("Fee",function(){
+  // describe("Fee",function(){
+
+  //   describe("/Post  fee", () => {
+  //     it("it should add fee if provided token is authorized", (done) => {
+  //       const fees = {
+  //        fullName: "Sujan Odari",
+  //        class: "1",
+  //        section: "A",
+  //        tuition: 2000,
+  //        eca: 100,
+  //        trans: 2000,
+  //        examfee: 200,
+  //        lastdue: 150
+  //       };
+       
+  //       chai
+  //         .request(app)
+  //         .post("/api/v1/fees")
+  //            .send (fees)
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(201);
+            
+  //           done();
+  //         });
+  //     });
+  //   });
+
+  //   describe("/get  fee", () => {
+  //     it("it should get fee and provided token is authorized", (done) => {
+       
+  //       chai
+  //         .request(app)
+  //         .get("/api/v1/fees")
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(201);
+            
+  //           done();
+  //         });
+  //     });
+  //   });
+
+  //   describe("/get  fee by id", () => {
+  //     it("it should get fee, id is provided and provided token is authorized", (done) => {
+  //      var id=1;
+  //       chai
+  //         .request(app)
+  //         .get("/api/v1/fees/"+id)
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(201);
+  //           done();
+  //         });
+  //     });
+  //   });
+
+
+  //   describe("/update  class fee by id", () => {
+  //     it("it should update fee, id is provided and provided token is authorized", (done) => {
+  //      var userId=1;
+  //      const fee = {
+  //       eca: 100,
+  //       trans: 2000,
+  //       tuition: 3000
+  //      };
+      
+  //       chai
+  //         .request(app)
+  //         .put("/api/v1/fee/"+userId)
+  //         .send(fee)
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(201);
+  //           done();
+  //         });
+  //     });
+  //   });
+    
+  // });
+  
+  // describe("Attendence",function(){
+
+
+  //   describe("/add  student attendence by id", () => {
+  //     it("it should add attendence, studentId is provided and provided token is authorized", (done) => {
+  //      var studentId=1;
+  //       chai
+  //         .request(app)
+  //         .put("/api/v1/users/add/attendence/"+studentId)
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(200);
+  //           done();
+  //         });
+  //     });
+  //   });
+
+
+
+  //   describe("/sub  student attendence by id", () => {
+  //     it("it should sub attendence, studentId is provided and provided token is authorized", (done) => {
+  //      var studentId=1;
+  //       chai
+  //         .request(app)
+  //         .put("/api/v1/users/sub/attendence/"+studentId)
+  //         .set("Authorization",Token)
+  //         .end((err, res) => {
+  //           res.should.have.status(200);
+  //           done();
+  //         });
+  //     });
+  //   });
+
+// var studenttoken= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJzdWphbkBnbWFpbC5jb20iLCJpYXQiOjE1OTUxNDM5NDV9.TwradLndCqPMaLhMmWStAiG-uQXf9JVbdCTyOOvce_o"
+
+//   describe("/get fee using token", () => {
+//         it("it should get student fee,  provided token is authorized", (done) => {
+          
+        
+//           chai
+//             .request(app)
+//             .get("/api/v1/fee" )
+            
+//             .set("Authorization",studenttoken)
+//             .end((err, res) => {
+//               res.should.have.status(201);
+//               done();
+//             });
+//         });
+//       });
+      
+var Token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbWFpbC5jb20iLCJpYXQiOjE1OTUxNTgyNTd9.eMXZiwFg-S_ZCS_Wr2USkIZV4xRmqYfL_Ku7kznLDRY"
+
+ describe("Fee",function(){
 
     describe("/Post  fee", () => {
       it("it should add fee if provided token is authorized", (done) => {
         const fees = {
          fullName: "Sujan Odari",
          class: "1",
-         section: "A",
-         tuition: 2000,
+         section:"A",
+         email:"sujan@gmail.com",
          eca: 100,
          trans: 2000,
-         examfee: 200,
+         tuition: 3000,
+          examfee: 200,
          lastdue: 150
         };
        
@@ -586,92 +723,6 @@ const Token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbW
           });
       });
     });
-
-    describe("/get  fee", () => {
-      it("it should get fee and provided token is authorized", (done) => {
-       
-        chai
-          .request(app)
-          .get("/api/v1/fees")
-          .set("Authorization",Token)
-          .end((err, res) => {
-            res.should.have.status(201);
-            
-            done();
-          });
-      });
-    });
-
-    describe("/get  fee by id", () => {
-      it("it should get fee, id is provided and provided token is authorized", (done) => {
-       var id=1;
-        chai
-          .request(app)
-          .get("/api/v1/fees/"+id)
-          .set("Authorization",Token)
-          .end((err, res) => {
-            res.should.have.status(201);
-            done();
-          });
-      });
-    });
-
-
-    describe("/update  class fee by id", () => {
-      it("it should update fee, id is provided and provided token is authorized", (done) => {
-       var userId=1;
-       const fee = {
-        eca: 100,
-        trans: 2000,
-        tuition: 3000
-       };
-      
-        chai
-          .request(app)
-          .put("/api/v1/fee/"+userId)
-          .send(fee)
-          .set("Authorization",Token)
-          .end((err, res) => {
-            res.should.have.status(201);
-            done();
-          });
-      });
-    });
-    
   });
-  
-  describe("Attendence",function(){
-
-
-    describe("/add  student attendence by id", () => {
-      it("it should add attendence, studentId is provided and provided token is authorized", (done) => {
-       var studentId=1;
-        chai
-          .request(app)
-          .put("/api/v1/users/add/attendence/"+studentId)
-          .set("Authorization",Token)
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
-    });
-
-
-
-    describe("/sub  student attendence by id", () => {
-      it("it should sub attendence, studentId is provided and provided token is authorized", (done) => {
-       var studentId=1;
-        chai
-          .request(app)
-          .put("/api/v1/users/sub/attendence/"+studentId)
-          .set("Authorization",Token)
-          .end((err, res) => {
-            res.should.have.status(200);
-            done();
-          });
-      });
-    });
-
-  });
+ 
   
