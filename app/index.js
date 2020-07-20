@@ -49,6 +49,11 @@ app.post("/api/v1/news", newsController.addNews);
 app.get("/api/v1/news", newsController.getallNews);
 app.put("/api/v1/news/:id", newsController.updateNews);
 
+// assignment route
+const assignmentController=require('./controllers/assignmentController');
+app.post('/api/v1/assignment', assignmentController.addAssignment);
+app.get('/api/v1/assignment/:id', assignmentController.getStudentAssignment);
+
 // for Notice route
 const noticeController = require("./controllers/noticeController");
 app.post("/api/v1/notice", noticeController.addNotice);
