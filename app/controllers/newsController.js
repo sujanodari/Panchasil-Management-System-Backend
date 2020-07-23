@@ -95,10 +95,77 @@ async function updateNews(req, res) {
   }
 }
 
+
+async function getNewsById(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+  try {
+    const result = await news.findAll({
+      where: {
+        
+        newsId: req.params.id,
+      }
+    });
+
+    const data = {
+      
+      title: result[0].title,
+      description: result[0].description,
+      name: result[0].name,
+      image: result[0].image,
+      };
+
+console.log(data)
+    res.status(201)
+    res.json(data);
+  } catch (error) {
+    res.status(500)
+    res.json({
+      status: 500,
+      message: error
+    });
+  }
+}
+
+
+async function updateNewsImage(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  //console.log(req.body);
+  try {
+    await news.update(
+      {
+        image: req.body.image,
+      },
+      {
+        where: {
+          newsId: req.params.id,
+        },
+      }
+    );
+    res.json({
+      status: 201,
+      message: "News Image Update successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
 module.exports = {
   addNews,
   getallNews,
   updateNews,
-  // decode,
-  // getUserByEmail,
+  getNewsById,
+  updateNewsImage,
+  
 };

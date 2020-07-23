@@ -47,18 +47,23 @@ app.get("/api/v1/decode",userTokenController.userFromToken);
 const newsController = require("./controllers/newsController");
 app.post("/api/v1/news", newsController.addNews);
 app.get("/api/v1/news", newsController.getallNews);
-app.put("/api/v1/news/:id", newsController.updateNews);
+app.get("/api/v1/news/:id",newsController.getNewsById);
+app.put("/api/v1/news/:id",newsController.updateNews);
+app.patch("/api/v1/news/:id",newsController.updateNewsImage);
 
 // assignment route
 const assignmentController=require('./controllers/assignmentController');
 app.post('/api/v1/assignment', assignmentController.addAssignment);
+app.get("/api/v1/news", newsController.getallNews);
 app.get('/api/v1/assignment/:id', assignmentController.getStudentAssignment);
 
 // for Notice route
 const noticeController = require("./controllers/noticeController");
 app.post("/api/v1/notice", noticeController.addNotice);
 app.get("/api/v1/notice", noticeController.getallNotice);
+app.get("/api/v1/notice/:id", noticeController.getNoticeById);
 app.put("/api/v1/notice/:id", noticeController.updateNotice);
+app.patch("/api/v1/notice/:id", noticeController.updateNoticeImage);
 
 //user routes
 const userController = require('./controllers/userController')
@@ -66,6 +71,7 @@ app.get("/api/v1/users", userController.getallUsers)
 app.get("/api/v1/users/staff", userController.getallUsersStaff)
 app.get("/api/v1/users/student", userController.getallUsersStudent)
 app.put("/api/v1/users/:id",userController.updateUserDetails);
+app.patch("/api/v1/users/:id",userController.updateProfilePicture);
 app.delete("/api/v1/users/:id",userController.deleteUser);
 app.get("/api/v1/users/:id",userController.getUserById);
 app.put("/api/v1/users/add/attendence/:id",userController.addAttendence);
@@ -85,6 +91,7 @@ app.put('/api/v1/routine/:id', classController.updateRoutine)
 app.delete('/api/v1/routine/:id', classController.deleteRoutine)
 app.put('/api/v1/fee/:id', classController.addFees)
 app.get('/api/v1/class/:id', classController.getClassById)
+app.put('/api/v1/class/:id', classController.updateClass)
 //subject route
 const subjectController = require("./controllers/subjectController");
 app.post("/api/v1/subjects", subjectController.addSubject);
@@ -94,11 +101,8 @@ app.post("/api/v1/subjectsClass", subjectController.addSubjectClass);
 app.get("/api/v1/subjectsClass", subjectController.getallSubjectClass);
 app.delete("/api/v1/subjectsClass/:id", subjectController.deleteSubjectClass);
 app.get('/api/v1/student/subject/:id', subjectController.getStudentSubject)
-
-//image upload
-const multer = require('multer');
-const path = require('path');
-
+app.get('/api/v1/subjects/:id', subjectController.getSubjectById)
+app.put('/api/v1/subjects/:id', subjectController.updateSubject)
 //fee route
 
 const feeController = require ("./controllers/feeController");
@@ -107,6 +111,12 @@ app.get("/api/v1/fees", feeController.getFee);
 app.get("/api/v1/fees/:id", feeController.getFeeById);
 app.delete("/api/v1/fees/:id", feeController.deleteFee);
 app.get("/api/v1/fee", feeController.getUserByEmail);
+
+//image upload
+const multer = require('multer');
+const path = require('path');
+
+
 
 
 const storage = multer.diskStorage({

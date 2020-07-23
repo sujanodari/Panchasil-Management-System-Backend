@@ -199,6 +199,69 @@ async function deleteSubjectClass(req, res) {
   }
 }
 
+async function getSubjectById(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+  try {
+    const result = await subject.findAll({
+      where: {
+        
+        subId: req.params.id,
+      }
+    });
+
+    const data = {
+      
+      subjectName: result[0].subjectName,
+      };
+
+console.log(data)
+    res.status(201)
+    res.json(data);
+  } catch (error) {
+    res.status(500)
+    res.json({
+      status: 500,
+      message: error
+    });
+  }
+}
+
+
+async function updateSubject(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  //console.log(req.body);
+  try {
+    await subject.update(
+      {
+        subjectName: req.body.subjectName,
+        
+      },
+      {
+        where: {
+          subId: req.params.id,
+        },
+      }
+    );
+    res.json({
+      status: 201,
+      message: "Subject Update successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
 module.exports = {
   addSubject,
   getallSubject,
@@ -206,5 +269,7 @@ module.exports = {
   addSubjectClass,
   getallSubjectClass,
   deleteSubjectClass,
-  getStudentSubject
+  getStudentSubject,
+  getSubjectById,
+  updateSubject,
 };

@@ -429,6 +429,45 @@ async function getClassById (req, res) {
   }
 }
 
+
+
+async function updateClass(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  //console.log(req.body);
+  try {
+    await Classes.update(
+      {
+        class: req.body.class,
+        section: req.body.section,
+        routine: req.body.routine,
+        tuition: req.body.tuition,
+        eca: req.body.eca,
+        trans: req.body.trans,
+       
+        
+      },
+      {
+        where: {
+          classId: req.params.id,
+        },
+      }
+    );
+    res.json({
+      status: 201,
+      message: "Class Update successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      status: 500,
+      message: error,
+    });
+  }
+}
+
 module.exports = {
   addclass,
   getallClass,
@@ -442,5 +481,6 @@ module.exports = {
   addFees,
   getClassById, 
   getAllEnrollsByClass,
+  updateClass,
 
 };
