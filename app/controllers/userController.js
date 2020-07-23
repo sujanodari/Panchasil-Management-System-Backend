@@ -1,7 +1,7 @@
 var Users= require('../models/UserModel');
 var jwt = require("jsonwebtoken");
 const SECRET_KEY = "secret_key";
-
+const bcrypt = require("bcryptjs");
 
 function notAuthenticated(res) {
   res.json({
@@ -66,13 +66,20 @@ async function getallUsers(req, res) {
         
         fullName: result[0].fullName,
         address: result[0].address,
+        date: result[0].date,
         contactNumber: result[0].contactNumber,
         email: result[0].email,
+        gender: result[0].gender,
+        attendance: result[0].attendance,
         parentName: result[0].parentName,
         parentAddress: result[0].parentAddress,
         parentContact: result[0].parentContact,
+        citizenshipNo: result[0].citizenshipNo,
+        password: result[0].password,
         amount:result[0].amount,
-        userType:result[0].userType
+        userType:result[0].userType,
+        securityAnswer:result[0].securityAnswer,
+        image:result[0].image,
         };
   
   console.log(data)
@@ -88,6 +95,8 @@ async function getallUsers(req, res) {
   }
 
   async function updateUserDetails(req, res) {
+    const password = req.body.password;
+    const hashedPassword = bcrypt.hashSync(password, 10);
 
     if (authenticate(req.headers.authorization) === false) {
       notAuthenticated(res);
@@ -98,12 +107,19 @@ async function getallUsers(req, res) {
         {
           fullName: req.body.fullName,
           address: req.body.address,
+          date: req.body.date,
           contactNumber: req.body.contactNumber,
           email: req.body.email,
+          gender:  req.body.gender,
+          attendance:req.body.attendance,
           parentName: req.body.parentName,
           parentAddress: req.body.parentAddress,
           parentContact: req.body.parentContact,
           amount:req.body.amount,
+          citizenshipNo: req.body.citizenshipNo,
+          password: hashedPassword,
+          userType:req.body.userType,
+          securityAnswer:req.body.securityAnswer,
         },
         {
           where: {
@@ -294,7 +310,35 @@ async function getallUsers(req, res) {
   }
 
 
- 
+  async function updateProfilePicture(req, res) {
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+   
+    try {
+      await Users.update(
+        {
+          image: req.body.image,
+        },
+        {
+          where: {
+            userId: req.params.id,
+          },
+        }
+      );
+      res.json({
+        status: 201,
+        message: "Profile Picture Update successfully!",
+      });
+    } catch (error) {
+     
+      res.json({
+        status: 500,
+        message: error,
+      });
+    }
+  }
 
   module.exports= {
       getallUsers,
@@ -304,5 +348,6 @@ async function getallUsers(req, res) {
       deleteUser,
       getUserById,
       addAttendence,
-      subAttendence
+      subAttendence,
+      updateProfilePicture,
   }
