@@ -725,4 +725,28 @@ var Token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbWF
     });
   });
  
+  describe("Question", function () {
+    describe("/Post  question", () => {
+      it("it should add question if provided token is authorized", (done) => {
+        const question = {
+          class: "2",
+          section: "A",
+          Exam_type: "unitTest2",
+          ExamDate: "2020/7/27",
+          questionBank: "myImage-1595660100900.docx",
+        };
+  
+        chai
+          .request(app)
+          .post("/api/v1/question")
+          .send(question)
+          .set("Authorization", Token)
+          .end((err, res) => {
+            res.should.have.status(200);
+  
+            done();
+          });
+      });
+    });
+  });
   
