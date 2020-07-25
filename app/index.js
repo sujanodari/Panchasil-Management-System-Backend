@@ -112,12 +112,13 @@ app.get("/api/v1/fees/:id", feeController.getFeeById);
 app.delete("/api/v1/fees/:id", feeController.deleteFee);
 app.get("/api/v1/fee", feeController.getUserByEmail);
 
+
+const questionController=require("./controllers/questionController");
+app.post('/api/v1/question',questionController.addQuestionBank);
+
 //image upload
 const multer = require('multer');
 const path = require('path');
-
-
-
 
 const storage = multer.diskStorage({
   destination: './public/images',
@@ -136,7 +137,7 @@ const upload = multer({
 }).single('myImage')
 
 function checkFileType(file, cb) {
-  const filetypes = /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/;
+  const filetypes = /\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|docx|pdf)$/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
   if (mimetype && extname) {
