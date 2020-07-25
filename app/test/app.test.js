@@ -750,3 +750,185 @@ var Token ="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJhZG1pbkBnbWF
     });
   });
   
+
+  //for Notice Update
+describe("/PUT/:id notice", () => {
+  it(" it should  update the notice info", (done) => {
+    const notice = {
+      title: "School",
+      description:
+        "School reopen from coming sunday",
+      name: "Greatly Phadera",
+    };
+    const noticeId = 3;
+    chai
+      .request(app)
+      .put("/api/v1/notice/" + noticeId)
+      .set("Authorization", Token)
+      .send(notice)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for notice image Update
+describe("/PUT/:id notice", () => {
+  it(" it should  update the notice image", (done) => {
+    const image = {
+      image: "myImage-1593414475992.png",
+    };
+    const noticeId = 2;
+    chai
+      .request(app)
+      .patch("/api/v1/notice/" + noticeId)
+      .set("Authorization", Token)
+      .send(image)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for News Update
+describe("/PUT/:id news", () => {
+  it(" it should  update the news info", (done) => {
+    const news = {
+      title: "Corona",
+      description: "Whole Nepal will be banda",
+      name: "RM Fadera",
+    };
+    const newsId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/news/" + newsId)
+      .set("Authorization", Token)
+      .send(news)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for news image Update
+describe("/PUT/:id news", () => {
+  it(" it should  update the news image", (done) => {
+    const image = {
+      image: "myImage-1593414475992.png",
+    };
+    const newsId = 3;
+    chai
+      .request(app)
+      .patch("/api/v1/news/" + newsId)
+      .set("Authorization", Token)
+      .send(image)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for class Update
+describe("/PUT/:id class", () => {
+  it(" it should  update the class info", (done) => {
+    const classes = {
+      class: "1",
+      section: "D",
+      tuition: "2000",
+      eca: "1000",
+      trans: "500",
+    };
+    const classesId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/class/" + classesId)
+      .set("Authorization", Token)
+      .send(classes)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for subject Update
+describe("/PUT/:id subject", () => {
+  it(" it should  update the subject info", (done) => {
+    const subject = {
+      subjectName: "Science",
+    };
+    const subId = 2;
+    chai
+      .request(app)
+      .put("/api/v1/class/" + subId)
+      .set("Authorization", Token)
+      .send(subject)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for user Update
+describe("/PUT/:id user", () => {
+  it(" it should  update the user info", (done) => {
+    const user = {
+      fullName: "lokendra",
+      address: "ktm",
+      contactNumber: "9876543211",
+      email: "lok@gmail.com",
+      gender: "Male",
+      attendance: "4",
+      parentName: "shyam rai",
+      parentAddress: "Ilam",
+      parentContact: "1234567890",
+      citizenshipNo: "8474747",
+      userType: "Student",
+      amount: "8474",
+      password: "lok1234",
+      securityAnswer: "dog",
+    };
+    const userId = 3;
+    chai
+      .request(app)
+      .put("/api/v1/users/" + userId)
+      .set("Authorization", Token)
+      .send(user)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
+
+//for user image Update
+describe("/PUT/:id user", () => {
+  it(" it should  update the user image", (done) => {
+    const image = {
+      image: "myImage-1593414475992.png",
+    };
+    const userId = 2;
+    chai
+      .request(app)
+      .patch("/api/v1/users/" + userId)
+      .set("Authorization", Token)
+      .send(image)
+      .end((err, res) => {
+        res.should.have.status(200);
+        res.body.should.be.a("object");
+        done();
+      });
+  });
+});
