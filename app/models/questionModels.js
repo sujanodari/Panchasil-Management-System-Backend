@@ -9,6 +9,11 @@ var questions = database.sequelize.define(
       autoIncrement: true,
       allowNull: false,
     },
+    user_id: {
+      type: database.Sequelize.INTEGER,
+      allowNull: false,
+      require: true,
+    },
     class: {
       type: database.Sequelize.ENUM(
         "PG",

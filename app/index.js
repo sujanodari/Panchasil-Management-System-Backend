@@ -114,7 +114,9 @@ app.get("/api/v1/fee", feeController.getUserByEmail);
 
 
 const questionController=require("./controllers/questionController");
-app.post('/api/v1/question',questionController.addQuestionBank);
+app.post('/api/v1/question/:id',questionController.addQuestionBank);
+app.get('/api/v1/teacherQuestion/:id', questionController.getQuestionTeacher);
+
 
 //image upload
 const multer = require('multer');

@@ -932,3 +932,78 @@ describe("/PUT/:id user", () => {
       });
   });
 });
+
+//  for assignment
+// var TokenAssignment =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJtYWhlc2hAZ21haWwuY29tIiwiaWF0IjoxNTk1MzQzODA5fQ.dHX7objOIMkTVM4qnQsJM7n7wdMfKdDgtcjMI5W0RlI";
+
+describe("Assignment", function () {
+  // describe("/Post  assignment", () => {
+  //   it("it should add assignment if provided token is authorized", (done) => {
+  //     const assignment = {
+  //       class: "1",
+  //       section: "A",
+  //       submissiondate: " 7/2/2020",
+  //       title: "Write about domestic animal",
+  //       image: "myImage-1595268622733.jpg",
+  //     };
+
+  //     chai
+  //       .request(app)
+  //       .post("/api/v1/assignment/")
+  //       .send(assignment)
+  //       .set("Authorization", TokenAssignment)
+  //       .end((err, res) => {
+  //         res.should.have.status(201);
+  //         done();
+  //       });
+  //   });
+  // });
+
+  // student token
+  var studentToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJtYW5pc2hAZ21haWwuY29tIiwiaWF0IjoxNTk1MzUyOTAxfQ.1xXDw2Y6sRud6Timd_vmXKV4p1Ksrh0JvA_XF0LQar0";
+  describe("/get  assignment by userid", () => {
+    it("it should get assignment, userid is provided and provided token is authorized", (done) => {
+      var id = 4;
+      chai
+        .request(app)
+        .get("/api/v1/assignment/" + id)
+        .set("Authorization", studentToken)
+        .end((err, res) => {
+          res.should.have.status(201);
+          done();
+        });
+    });
+  });
+
+  var teacherToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyRW1haWwiOiJtYWhlc2hAZ21haWwuY29tIiwiaWF0IjoxNTk1ODMwNTA4fQ.e0YET3SoIZfSVGSK7xhjhYEJJez0W8-FTUrGIqcZIAM";
+  describe("/get teacher assignment by userid", () => {
+    it("it should get assignment, userid is provided and provided token is authorized", (done) => {
+      var id = 4;
+      chai
+        .request(app)
+        .get("/api/v1/teacherassignment/" + id)
+        .set("Authorization", teacherToken)
+        .end((err, res) => {
+          res.should.have.status(201);
+          done();
+        });
+    });
+  });
+
+  describe("/Delete a assignment", () => {
+    it("it should delete a assignment, provided token is authorized and enroll is there already", (done) => {
+      var id = 4;
+      chai
+        .request(app)
+        .delete("/api/v1/teacherassignment/" + id)
+        .set("Authorization", teacherToken)
+        .end((err, res) => {
+          res.should.have.status(201);
+          done();
+        });
+    });
+  });
+});
