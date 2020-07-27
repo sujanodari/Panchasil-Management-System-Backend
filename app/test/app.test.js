@@ -1007,3 +1007,17 @@ describe("Assignment", function () {
     });
   });
 });
+
+describe("/get  added question by teacher id in teacher panel", () => {
+      it("it should get added question, id is provided and provided token is authorized", (done) => {
+       var id=1;
+        chai
+          .request(app)
+          .get("/api/v1/teacherQuestion/"+id)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            done();
+          });
+      });
+    });
