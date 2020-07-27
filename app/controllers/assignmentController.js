@@ -34,31 +34,79 @@ async function addAssignment(req, res) {
     notAuthenticated(res);
     return;
   }
+
   try {
-    const result = await assignment.findOne({
-      where: [{ title: req.body.title }],
+    const result = await user.findOne({
+      where: { userId: req.params.id },
     });
-
     if (result) {
-      res.status(403);
-      res.json({ status: 403, message: "assignment already exist" });
-    } else {
-      assignment.create({
-        class: req.body.class,
-        section: req.body.section,
-        submissiondate: req.body.submissiondate,
-        title: req.body.title,
-        image: req.body.image,
-      });
+      let userId = result.dataValues.userId;
+      try {
+        const result = await Classes.findOne({
+          where: [{ class: req.body.class, section: req.body.section }],
+        });
 
-      res.status(201);
-      res.json({ status: 201, message: "assignment added" });
+        if (result) {
+          try {
+            const result = await assignment.findOne({
+              where: [{ title: req.body.title }],
+            });
+            if (result) {
+              res.status(404);
+              res.json({
+                status: 404,
+                message: "Assignment already Exists",
+              });
+            } else {
+              console.log(userId);
+              assignment.create({
+                user_id: userId,
+                class: req.body.class,
+                section: req.body.section,
+                submissiondate: req.body.submissiondate,
+                title: req.body.title,
+                image: req.body.image,
+              });
+
+              res.status(201);
+              res.json({
+                status: 201,
+                message: "Assignment added",
+              });
+            }
+          } catch (err) {
+            res.status(500);
+            res.json({
+              status: 500,
+              message: err,
+            });
+          }
+        } else {
+          res.status(403);
+          res.json({
+            status: 403,
+            message: "Class not found",
+          });
+        }
+      } catch (err) {
+        res.status(500);
+        res.json({
+          status: 500,
+          message: err,
+        });
+      }
+    } else {
+      res.status(405);
+      res.json({
+        status: 405,
+        message: "User not found",
+      });
     }
-  } catch (error) {
+  } catch (err) {
     res.status(500);
     res.json({
       status: 500,
-      message: error,
+      message: err,
     });
   }
 }
@@ -83,24 +131,23 @@ async function getStudentAssignment(req, res) {
 
       if (result) {
         let class_id = result.dataValues.class;
-       // console.log(class_id + "mahesh");
         try {
-          const result = await assignment.findOne({
+          const result = await assignment.findAll({
             where: { class: class_id },
           });
-          if(result){
-          res.status(201);
-          res.json({
-            status: 201,
-            result: result,
-          });
-        }else{
-          res.status(500);
-          res.json({
-            status: 500,
-            message: err,
-          });
-        }
+          if (result) {
+            res.status(201);
+            res.json({
+              status: 201,
+              result: result,
+            });
+          } else {
+            res.status(500);
+            res.json({
+              status: 500,
+              message: err,
+            });
+          }
         } catch (err) {
           res.status(500);
           res.json({
@@ -115,12 +162,6 @@ async function getStudentAssignment(req, res) {
           message: "Cllass not matched",
         });
       }
-      // res.status(201);
-      // res.json({
-      //   status: 201,
-      //   result: result,
-      //   year: year,
-      // });
     } catch (err) {
       res.status(500);
       res.json({
@@ -137,7 +178,52 @@ async function getStudentAssignment(req, res) {
   }
 }
 
+async function getAssignmentTeacher(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  try {
+    const result = await assignment.findAll({
+      where: [{ user_id: req.params.id }],
+    });
+    res.status(201);
+    res.json(result);
+  } catch (err) {
+    res.status(500);
+    res.json({
+      status: 500,
+      message: err,
+    });
+  }
+}
+
+async function deleteAssignment(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+  try {
+    assignment.destroy({
+      where: { assignmentId: req.params.id },
+    });
+    res.status(201);
+    res.json({
+      status: 201,
+      message: "assignment deleted",
+    });
+  } catch (err) {
+    res.status(500);
+    res.json({
+      status: 500,
+      message: err,
+    });
+  }
+}
+
 module.exports = {
   addAssignment,
   getStudentAssignment,
+  getAssignmentTeacher,
+  deleteAssignment,
 };

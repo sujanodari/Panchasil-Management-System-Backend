@@ -53,10 +53,10 @@ app.patch("/api/v1/news/:id",newsController.updateNewsImage);
 
 // assignment route
 const assignmentController=require('./controllers/assignmentController');
-app.post('/api/v1/assignment', assignmentController.addAssignment);
-app.get("/api/v1/news", newsController.getallNews);
+app.post('/api/v1/assignment/:id', assignmentController.addAssignment);
 app.get('/api/v1/assignment/:id', assignmentController.getStudentAssignment);
-
+app.get('/api/v1/teacherassignment/:id', assignmentController.getAssignmentTeacher);
+app.delete("/api/v1/teacherassignment/:id",assignmentController.deleteAssignment);
 // for Notice route
 const noticeController = require("./controllers/noticeController");
 app.post("/api/v1/notice", noticeController.addNotice);
