@@ -122,6 +122,15 @@ app.post('/api/v1/question/:id',questionController.addQuestionBank);
 app.get('/api/v1/teacherQuestion/:id', questionController.getQuestionTeacher);
 
 
+//exam route
+const examController=require("./controllers/examController");
+app.post('/api/v1/exam',examController.addExam);
+app.delete('/api/v1/exam/:id',examController.deleteExam);
+app.get('/api/v1/exam',examController.getAllExam);
+app.post('/api/v1/exam/user',examController.addExamUser);
+app.delete('/api/v1/exam/user/:id',examController.deleteUserExam);
+app.get('/api/v1/exam/user',examController.getAllUserExam);
+
 //image upload
 const multer = require('multer');
 const path = require('path');
