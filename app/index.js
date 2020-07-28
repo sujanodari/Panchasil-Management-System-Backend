@@ -64,7 +64,11 @@ app.get("/api/v1/notice", noticeController.getallNotice);
 app.get("/api/v1/notice/:id", noticeController.getNoticeById);
 app.put("/api/v1/notice/:id", noticeController.updateNotice);
 app.patch("/api/v1/notice/:id", noticeController.updateNoticeImage);
-
+// for activities
+const activitiesController=require('./controllers/activitiesController');
+app.post('/api/v1/activities', activitiesController.addActivities);
+app.get('/api/v1/activities', activitiesController.getallActivities);
+app.delete("/api/v1/activities/:id",activitiesController.deleteActivities);
 //user routes
 const userController = require('./controllers/userController')
 app.get("/api/v1/users", userController.getallUsers)
