@@ -80,6 +80,7 @@ app.delete("/api/v1/users/:id",userController.deleteUser);
 app.get("/api/v1/users/:id",userController.getUserById);
 app.put("/api/v1/users/add/attendence/:id",userController.addAttendence);
 app.put("/api/v1/users/sub/attendence/:id",userController.subAttendence);
+app.get("/api/v1/usersClass/:id",userController.getUserClassById);
 
 //class route
 const classController=require('./controllers/classController')
@@ -115,12 +116,15 @@ app.get("/api/v1/fees", feeController.getFee);
 app.get("/api/v1/fees/:id", feeController.getFeeById);
 app.delete("/api/v1/fees/:id", feeController.deleteFee);
 app.get("/api/v1/fee", feeController.getUserByEmail);
-
+app.put("/api/v1/fees/:id", feeController.updateFees);
 
 const questionController=require("./controllers/questionController");
 app.post('/api/v1/question/:id',questionController.addQuestionBank);
 app.get('/api/v1/teacherQuestion/:id', questionController.getQuestionTeacher);
 
+//for character
+const characterController = require ("./controllers/characterController");
+app.post("/api/v1/character", characterController.addCharacter);
 
 //exam route
 const examController=require("./controllers/examController");
@@ -186,6 +190,75 @@ app.post('/api/v1/imageUpload', (req, res) => {
   });
 });
 app.use(express.static(path.join(__dirname, './images/')));
+
+
+
+const pdf = require('html-pdf');
+const invoiceTemplate = require('./documents/invoice');
+const characterTemplate=require('./documents/character');
+const addUserTemplate=require('./documents/addUser')
+const feeClearanceTemplate=require('./documents/feeClearance')
+
+app.post('/api/v1/createInvoice', (req, res) => {
+  pdf.create(invoiceTemplate(req.body), {}).toFile('invoice.pdf', (err) => {
+      if(err) {
+          res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+  });
+});
+
+app.get('/api/v1/fetchInvoice', (req, res) => {
+  res.sendFile(`${__dirname}/invoice.pdf`)
+})
+
+
+
+app.post('/api/v1/createFeeClearance', (req, res) => {
+  pdf.create(feeClearanceTemplate(req.body), {}).toFile('Clearance.pdf', (err) => {
+      if(err) {
+          res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+  });
+});
+
+app.get('/api/v1/fetchFeeClearance', (req, res) => {
+  res.sendFile(`${__dirname}/Clearance.pdf`)
+})
+
+
+app.post('/api/v1/createCharacter', (req, res) => {
+  pdf.create(characterTemplate(req.body), {}).toFile('character.pdf', (err) => {
+      if(err) {
+          res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+  });
+});
+
+app.get('/api/v1/fetchCharacter', (req, res) => {
+  res.sendFile(`${__dirname}/character.pdf`)
+})
+
+
+
+app.post('/api/v1/createAddUser', (req, res) => {
+  pdf.create(addUserTemplate(req.body), {}).toFile('addUser.pdf', (err) => {
+      if(err) {
+          res.send(Promise.reject());
+      }
+
+      res.send(Promise.resolve());
+  });
+});
+
+app.get('/api/v1/fetchAddUser', (req, res) => {
+  res.sendFile(`${__dirname}/addUser.pdf`)
+})
 
 
 
