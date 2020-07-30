@@ -44,11 +44,11 @@ async function enrollStudent(req, res) {
         });
 
         if (result) {
-          let class_id = result.dataValues.classId;
+          let ClassClassId = result.dataValues.classId;
 
           try {
             const result = await Enroll.findOne({
-              where: { user_id: req.params.id },
+              where: { UserUserId: req.params.id },
             });
             if (result) {
               res.status(404);
@@ -58,8 +58,8 @@ async function enrollStudent(req, res) {
               });
             } else {
               Enroll.create({
-                class_id: class_id,
-                user_id: req.params.id,
+                ClassClassId: ClassClassId,
+                UserUserId: req.params.id,
                 year: req.body.year,
               });
 
@@ -146,7 +146,7 @@ async function getAllEnrollsByClass(req,res){
   }
   try{
     const result=await Enroll.findAll({
-      where:[{class_id:req.params.id}]
+      where:[{ClassClassId:req.params.id}]
     })
     res.status(201)
     res.json(result)
@@ -185,15 +185,15 @@ async function getStudentClass(req, res) {
     return;
   }
   const result = await Enroll.findOne({
-    where: { user_id: req.params.id },
+    where: { UserUserId: req.params.id },
   });
   if (result) {
-    let class_id = result.dataValues.class_id;
+    let ClassClassId = result.dataValues.ClassClassId;
     let year = result.dataValues.year;
 
     try {
       const result = await Classes.findOne({
-        where: { classId: class_id },
+        where: { classId: ClassClassId },
       });
       res.status(201);
       res.json({

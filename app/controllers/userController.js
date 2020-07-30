@@ -1,7 +1,17 @@
-var Users= require('../models/UserModel');
 var jwt = require("jsonwebtoken");
 const SECRET_KEY = "secret_key";
 const bcrypt = require("bcryptjs");
+
+var Users = require("../models/UserModel");
+var classes = require("../models/classModel");
+var Enrolls = require("../models/Enroll");
+const mySeq = require("../config/dbConfig");
+
+Users.hasMany(Enrolls);
+Enrolls.belongsTo(Users);
+
+classes.hasMany(Enrolls);
+Enrolls.belongsTo(classes);
 
 function notAuthenticated(res) {
   res.json({
@@ -340,6 +350,52 @@ async function getallUsers(req, res) {
     }
   }
 
+  async function getUserClassById(req, res) {
+    if (authenticate(req.headers.authorization) === false) {
+      notAuthenticated(res);
+      return;
+    }
+    mySeq.sequelize
+      .query(
+        `select * from  enrolls e 
+           inner join Users u ON u.userId = e.UserUserId 
+           inner join classes c ON c.classId=e.ClassClassId where u.userId =:uId`,
+        {
+          replacements: { uId: req.params.id },
+          type: mySeq.sequelize.QueryTypes.SELECT,
+        }
+      )
+      .then((result) => {
+        const data = {
+          userId: result[0].userId,
+          fullName: result[0].fullName,
+          address: result[0].address,
+          contactNumber: result[0].contactNumber,
+          email: result[0].email,
+          gender: result[0].gender,
+          userType: result[0].userType,
+          classId: result[0].classId,
+          class: result[0].class,
+          section: result[0].section,
+          year: result[0].year,
+          tuition: result[0].tuition,
+          eca: result[0].eca,
+          trans: result[0].trans,
+        
+          UserUserId: result[0].UserUserId,
+          ClassClassId: result[0].ClassClassId,
+        };
+  
+        res.json(data);
+      })
+      .catch((err) => {
+        res.json({
+          status: false,
+          message: "Error: " + err,
+        });
+      });
+  }
+
   module.exports= {
       getallUsers,
       getallUsersStaff,
@@ -350,4 +406,5 @@ async function getallUsers(req, res) {
       addAttendence,
       subAttendence,
       updateProfilePicture,
+      getUserClassById,
   }

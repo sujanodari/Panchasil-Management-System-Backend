@@ -1,6 +1,8 @@
 var database = require("../config/dbConfig.js");
+var user = require("./UserModel");
+var classes = require("./classModel");
 
-var Enroll =database.sequelize.define('Enrolls',{
+var Enrolls =database.sequelize.define('Enrolls',{
      //attributes
      enrollId: {
         type: database.Sequelize.INTEGER,
@@ -8,27 +10,26 @@ var Enroll =database.sequelize.define('Enrolls',{
         autoIncrement: true,
         allowNull: false,
       },
-      user_id:{
-        type: database.Sequelize.INTEGER,
-        allowNull: false,
-        require:true,
-      },
+      
       year:{
-          type:database.Sequelize.DATE,
+          type:database.Sequelize.DATEONLY,
             allowNull:false,
             require:true
       },
-      class_id:{
-          type:database.Sequelize.INTEGER,
-          allowNull:false,
-          require:true
-      },
+      
 },{
     freezeTableName:true,
     tablesName:"Enrolls",
     paranoid: false,
 })
-Enroll.sync({force:false})
+
+user.hasMany(Enrolls);
+Enrolls.belongsTo(user);
+
+classes.hasMany(Enrolls);
+Enrolls.belongsTo(classes);
+
+Enrolls.sync({force:false})
 .then(function(){
 
 })
@@ -36,5 +37,4 @@ Enroll.sync({force:false})
     console.log(err);
 });
 
-module.exports=Enroll;
-
+module.exports=Enrolls;
