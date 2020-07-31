@@ -135,6 +135,13 @@ app.post('/api/v1/exam/user',examController.addExamUser);
 app.delete('/api/v1/exam/user/:id',examController.deleteUserExam);
 app.get('/api/v1/exam/user',examController.getAllUserExam);
 
+//add marks route
+const addExamMarkController=require("./controllers/addExamMarkController");
+app.post('/api/v1/ExamMarks',addExamMarkController.AddMarks);
+app.get('/api/v1/ExamMarks',addExamMarkController.getAllExamMarks);
+app.get('/api/v1/ExamMarks/:id',addExamMarkController.getExamMarksById);
+app.put('/api/v1/ExamMarks/:id',addExamMarkController.updateExamMarks);
+
 //image upload
 const multer = require('multer');
 const path = require('path');
