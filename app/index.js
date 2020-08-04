@@ -121,6 +121,8 @@ app.put("/api/v1/fees/:id", feeController.updateFees);
 const questionController=require("./controllers/questionController");
 app.post('/api/v1/question/:id',questionController.addQuestionBank);
 app.get('/api/v1/teacherQuestion/:id', questionController.getQuestionTeacher);
+app.get("/api/v1/question/:id", questionController.getQuestionById);
+app.delete("/api/v1/question/:id", questionController.deleteQuestion);
 
 //for character
 const characterController = require ("./controllers/characterController");

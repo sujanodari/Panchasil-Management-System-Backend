@@ -134,7 +134,104 @@ async function getQuestionTeacher(req, res) {
   }
 }
 
+async function getQuestionById(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+  try {
+    const result = await questions.findAll({
+      where: {
+        
+        questionId: req.params.id,
+      }
+    });
+
+    const data = {
+
+      class: result[0].class,
+      section: result[0].section,
+      Exam_type: result[0].Exam_type,
+      ExamDate: result[0].ExamDate,
+      
+      };
+
+console.log(data)
+    res.status(201)
+    res.json(data);
+  } catch (error) {
+    res.status(500)
+    res.json({
+      status: 500,
+      message: error
+    });
+  }
+}
+
+async function deleteQuestion(req, res) {
+  if (authenticate(req.headers.authorization) === false) {
+    notAuthenticated(res);
+    return;
+  }
+
+ 
+    try {
+      await questions.destroy(
+        {
+          where: {
+            questionId: req.params.id,
+          },
+        }
+      );
+      res.status(204);
+      res.json({
+        status: 204,
+        message: "Question Deleted successfully!",
+      });
+    } catch (error) {
+      console.log(error);
+      res.json({
+        status: 500,
+        message: error,
+      });
+    }
+}
+// async function updateQuestionFile(req, res) {
+//   if (authenticate(req.headers.authorization) === false) {
+//     notAuthenticated(res);
+//     return;
+//   }
+//   //console.log(req.body);
+//   try {
+//     await questions.update(
+//       {
+//         questionBank: req.body.questionBank,
+//       },
+//       {
+//         where: {
+//           questionId: req.params.id,
+//         },
+//       }
+//     );
+//     res.json({
+//       status: 201,
+//       message: "Question Update successfully!",
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.json({
+//       status: 500,
+//       message: error,
+//     });
+//   }
+// }
+
+
 module.exports = {
     addQuestionBank,
     getQuestionTeacher,
+    getQuestionById,
+    deleteQuestion,
+    //updateQuestionFile
   };
