@@ -1021,3 +1021,18 @@ describe("/get  added question by teacher id in teacher panel", () => {
           });
       });
     });
+
+    // delete question bank
+    describe("/Delete QuestionBank ", () => {
+      it("it should delete a QuestionBank, provided token is authorized", (done) => {
+        var id=3
+        chai
+          .request(app)
+          .delete("/api/v1/questionBank/"+id)
+          .set("Authorization",Token)
+          .end((err, res) => {
+            res.should.have.status(201);
+            done();
+          });
+      });
+    });
